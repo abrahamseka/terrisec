@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Terrisec Language Solution | Interpretation & Translation</title>
+    <meta name="description" content="Professional interpretation and translation services in 80+ languages.">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Inter:wght@400;500;600&display=swap">
+    <style>
+        :root {
+            --bg: #fff;
+            --alt: #f3f6f8;
+            --ink: #14212b;
+            --mute: #53636f;
+            --pri: #3a7766;
+            --pri2: #2e6050;
+            --acc: #e5c48a;
+            --card: #fff;
+            --line: #dbe3e8;
+            --dark: #16302b;
+            box-sizing: border-box;
+            padding-top: env(safe-area-inset-top, 0px);
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+            color-scheme: light
+        }
+
+        @media (prefers-color-scheme:dark) {
+            :root:not([data-theme="light"]) {
+                --bg: #0f1a18;
+                --alt: #14231f;
+                --ink: #e8f0ed;
+                --mute: #9db5ae;
+                --pri: #5fb39d;
+                --pri2: #4a9a85;
+                --card: #182a26;
+                --line: #25403a;
+                --dark: #0a1512;
+                color-scheme: dark
+            }
+        }
+
+        :root[data-theme="dark"] {
+            --bg: #0f1a18;
+            --alt: #14231f;
+            --ink: #e8f0ed;
+            --mute: #9db5ae;
+            --pri: #5fb39d;
+            --pri2: #4a9a85;
+            --card: #182a26;
+            --line: #25403a;
+            --dark: #0a1512;
+            color-scheme: dark
+        }
+
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: calc(80px + env(safe-area-inset-top, 0px))
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--ink);
+            font: 400 1rem/1.65 Inter, system-ui, sans-serif
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: Fraunces, Georgia, serif;
+            line-height: 1.15;
+            margin: 0 0 .6rem
+        }
+
+        h1 {
+            font-size: clamp(2.2rem, 5.5vw, 3.8rem)
+        }
+
+        h2 {
+            font-size: clamp(1.7rem, 3.5vw, 2.5rem)
+        }
+
+        h3 {
+            font-size: 1.2rem
+        }
+
+        p {
+            margin: 0 0 1rem;
+            color: var(--mute)
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none
+        }
+
+        .wrap {
+            max-width: 1160px;
+            margin: 0 auto;
+            padding: 0 1.25rem
+        }
+
+        section {
+            padding: 4.5rem 0
+        }
+
+        .alt {
+            background: var(--alt)
+        }
+
+        .eyebrow {
+            display: block;
+            color: var(--pri);
+            font-weight: 600;
+            font-size: .8rem;
+            letter-spacing: .14em;
+            text-transform: uppercase;
+            margin-bottom: .6rem
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--pri);
+            color: #fff;
+            font-weight: 600;
+            padding: .85rem 1.6rem;
+            border-radius: 6px;
+            border: 0;
+            cursor: pointer;
+            font: inherit;
+            font-weight: 600;
+            transition: background .2s, transform .2s
+        }
+
+        .btn:hover {
+            background: var(--pri2);
+            transform: translateY(-2px)
+        }
+
+        .btn.ghost {
+            background: transparent;
+            border: 2px solid #fff;
+            color: #fff
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 20;
+            background: var(--bg);
+            border-bottom: 1px solid var(--line);
+            padding-top: env(safe-area-inset-top, 0px)
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 72px
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: .6rem;
+            font-family: Fraunces, serif;
+            font-weight: 700;
+            font-size: 1.25rem
+        }
+
+        .lg {
+            width: 50px;
+            height: 43px;
+            flex: none
+        }
+
+        .hero .btn:not(.ghost) {
+            background: #be452b
+        }
+
+        .hero .btn:not(.ghost):hover {
+            background: #a23a23
+        }
+
+        nav ul {
+            display: flex;
+            gap: 1.8rem;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            align-items: center
+        }
+
+        nav a:not(.btn) {
+            font-weight: 500;
+            font-size: .95rem
+        }
+
+        nav a:not(.btn):hover {
+            color: var(--pri)
+        }
+
+        .tools {
+            display: flex;
+            gap: .6rem;
+            align-items: center
+        }
+
+        #theme {
+            background: var(--alt);
+            border: 1px solid var(--line);
+            color: var(--ink);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.1rem
+        }
+
+        #burger {
+            display: none;
+            background: none;
+            border: 0;
+            color: var(--ink);
+            font-size: 1.6rem;
+            cursor: pointer
+        }
+
+        .hero {
+            position: relative;
+            color: #fff;
+            background: linear-gradient(135deg, #16302b, #3a7766);
+            overflow: hidden;
+            padding: 6rem 0 7rem
+        }
+
+        .hero .wrap {
+            position: relative;
+            z-index: 1;
+            max-width: 1160px
+        }
+
+        .hero p {
+            color: #cfe4e6;
+            max-width: 560px;
+            font-size: 1.1rem
+        }
+
+        .hero .eyebrow {
+            color: var(--acc)
+        }
+
+        .hero .row {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1.8rem
+        }
+
+        .bubble {
+            position: absolute;
+            border-radius: 50% 50% 50% 8px;
+            background: rgba(255, 255, 255, .08);
+            color: rgba(255, 255, 255, .28);
+            display: grid;
+            place-items: center;
+            font-family: Fraunces, serif;
+            font-weight: 700
+        }
+
+        .b1 {
+            width: 220px;
+            height: 200px;
+            right: 6%;
+            top: 12%;
+            font-size: 3.4rem
+        }
+
+        .b2 {
+            width: 140px;
+            height: 130px;
+            right: 24%;
+            bottom: 8%;
+            font-size: 2.2rem;
+            border-radius: 50% 50% 8px 50%
+        }
+
+        .b3 {
+            width: 100px;
+            height: 92px;
+            right: 2%;
+            bottom: 14%;
+            font-size: 1.6rem
+        }
+
+        .strip {
+            margin-top: -3.2rem;
+            position: relative;
+            z-index: 2;
+            padding: 0
+        }
+
+        .strip ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem
+        }
+
+        .strip li {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .08)
+        }
+
+        .strip p {
+            margin: 0;
+            font-size: .92rem
+        }
+
+        .ico {
+            font-size: 1.8rem;
+            display: block;
+            margin-bottom: .4rem
+        }
+
+        .two {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3.5rem;
+            align-items: center
+        }
+
+        .visual {
+            position: relative;
+            min-height: 380px;
+            border-radius: 14px;
+            background: linear-gradient(160deg, var(--pri), var(--dark));
+            overflow: hidden;
+            display: grid;
+            place-items: center;
+            color: #fff
+        }
+
+        .visual .big {
+            font-family: Fraunces, serif;
+            font-size: 7rem;
+            font-weight: 700;
+            opacity: .9
+        }
+
+        .visual span.t {
+            position: absolute;
+            font-weight: 600;
+            background: rgba(255, 255, 255, .14);
+            padding: .35rem .8rem;
+            border-radius: 99px;
+            font-size: .85rem
+        }
+
+        blockquote {
+            margin: 1.4rem 0;
+            padding: 1rem 1.3rem;
+            border-left: 4px solid var(--acc);
+            background: var(--card);
+            border-radius: 0 8px 8px 0;
+            color: var(--mute);
+            font-style: italic
+        }
+
+        blockquote b {
+            display: block;
+            font-style: normal;
+            color: var(--ink);
+            margin-top: .4rem
+        }
+
+        .head {
+            text-align: center;
+            max-width: 640px;
+            margin: 0 auto 2.6rem
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.2rem
+        }
+
+        .tile {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 1.6rem;
+            transition: transform .2s, box-shadow .2s
+        }
+
+        .tile:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 14px 30px rgba(0, 0, 0, .1)
+        }
+
+        .tile .ico {
+            width: 48px;
+            height: 48px;
+            border-radius: 10px;
+            background: var(--alt);
+            display: grid;
+            place-items: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem
+        }
+
+        .tile p {
+            margin: 0;
+            font-size: .95rem
+        }
+
+        .langs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .6rem;
+            justify-content: center;
+            margin-top: 1.5rem
+        }
+
+        .langs span {
+            background: var(--card);
+            border: 1px solid var(--line);
+            padding: .45rem 1rem;
+            border-radius: 99px;
+            font-size: .9rem;
+            font-weight: 500
+        }
+
+        .rev {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.2rem
+        }
+
+        .rev figure {
+            margin: 0;
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            padding: 1.8rem
+        }
+
+        .stars {
+            color: var(--acc);
+            letter-spacing: 3px;
+            margin-bottom: .6rem
+        }
+
+        figcaption {
+            display: flex;
+            gap: .8rem;
+            align-items: center;
+            font-size: .9rem;
+            color: var(--mute)
+        }
+
+        figcaption b {
+            display: block;
+            color: var(--ink)
+        }
+
+        .av {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--pri);
+            color: #fff;
+            display: grid;
+            place-items: center;
+            font-weight: 600
+        }
+
+        .cta {
+            background: var(--dark);
+            color: #fff
+        }
+
+        .cta p {
+            color: #a9c4c8
+        }
+
+        .cta .eyebrow {
+            color: var(--acc)
+        }
+
+        form {
+            display: grid;
+            gap: .9rem
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            font: inherit;
+            padding: .8rem 1rem;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, .22);
+            background: rgba(255, 255, 255, .08);
+            color: #fff
+        }
+
+        input::placeholder,
+        textarea::placeholder {
+            color: #8fb0b6
+        }
+
+        #ok {
+            color: var(--acc);
+            font-weight: 600;
+            min-height: 1.4em;
+            margin: 0
+        }
+
+        footer {
+            background: #07131a;
+            color: #a9bcc2;
+            padding: 3.5rem 0 1.5rem;
+            font-size: .92rem
+        }
+
+        footer .cols {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1.4fr;
+            gap: 2rem
+        }
+
+        footer h4 {
+            color: #fff;
+            margin: 0 0 .8rem;
+            font-size: 1rem
+        }
+
+        footer ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            gap: .4rem
+        }
+
+        footer a:hover {
+            color: #fff
+        }
+
+        footer .logo {
+            color: #fff;
+            margin-bottom: .8rem
+        }
+
+        .copy {
+            border-top: 1px solid #1a2d36;
+            margin-top: 2rem;
+            padding-top: 1.2rem;
+            text-align: center;
+            font-size: .85rem
+        }
+
+        @media (max-width:860px) {
+            #burger {
+                display: block
+            }
+
+            nav ul {
+                display: none;
+                position: absolute;
+                top: calc(72px + env(safe-area-inset-top, 0px));
+                left: 0;
+                right: 0;
+                background: var(--bg);
+                flex-direction: column;
+                padding: 1.2rem;
+                border-bottom: 1px solid var(--line);
+                gap: 1rem
+            }
+
+            nav ul.open {
+                display: flex
+            }
+
+            .tools .btn {
+                display: none
+            }
+
+            .strip ul,
+            .grid,
+            .rev,
+            .two,
+            footer .cols {
+                grid-template-columns: 1fr
+            }
+
+            .strip ul {
+                grid-template-columns: 1fr 1fr
+            }
+
+            .bubble {
+                opacity: .5
+            }
+
+            .b1 {
+                width: 130px;
+                height: 120px;
+                font-size: 2rem
+            }
+
+            .visual {
+                min-height: 260px
+            }
+        }
+
+        @media (max-width:520px) {
+            .strip ul {
+                grid-template-columns: 1fr
+            }
+        }
+
+        @media (prefers-reduced-motion:reduce) {
+            * {
+                transition: none !important;
+                scroll-behavior: auto !important
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <symbol id="tls" viewBox="6 8 88 76">
+            <ellipse cx="48.8" cy="36.3" rx="34.5" ry="25.7" fill="#be452b" />
+            <ellipse cx="48.8" cy="62.8" rx="27" ry="17.4" fill="#4a8f7c" />
+            <path d="M9 60.8H91" stroke="#e5c48a" stroke-width="1.5" stroke-linecap="round"
+                stroke-dasharray="3.4 2.6" />
+            <g fill="#fff" stroke="#e5c48a" stroke-width="1">
+                <circle cx="37.4" cy="60.8" r="4.6" />
+                <circle cx="48.8" cy="60.8" r="4.6" />
+                <circle cx="60.5" cy="60.8" r="4.6" />
+            </g>
+            <g font-family="Georgia,serif" font-weight="700" font-size="6" text-anchor="middle" fill="#1c1c1c"><text
+                    x="37.4" y="63">T</text><text x="48.8" y="63">L</text><text x="60.5" y="63">S</text></g>
+        </symbol>
+    </svg>
+    <header>
+        <div class="wrap nav">
+            <a class="logo" href="#top"><svg class="lg" role="img" aria-label="TLS logo">
+                    <use href="#tls" />
+                </svg>Terrisec</a>
+            <nav aria-label="Main">
+                <ul id="menu">
+                    <li><a href="#top">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#reviews">Reviews</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="tools"><a class="btn" href="#contact">Get a Quote</a><button id="theme"
+                    aria-label="Toggle dark mode">☾</button><button id="burger" aria-label="Menu">☰</button></div>
+        </div>
+    </header>
+
+    <main id="top">
+        <div class="hero">
+            <div class="wrap">
+                <span class="eyebrow">Terrisec Language Solution</span>
+                <h1>Every language.<br>One clear message.</h1>
+                <p>Certified interpreters and translators for business, legal, medical and community needs, delivered
+                    accurately, confidentially and on time.</p>
+                <div class="row"><a class="btn" href="#contact">Request a Quote</a><a class="btn ghost"
+                        href="#services">Our Services</a></div>
+            </div>
+            <div class="bubble b1" aria-hidden="true">Hello</div>
+            <div class="bubble b2" aria-hidden="true">你好</div>
+            <div class="bubble b3" aria-hidden="true">Hola</div>
+        </div>
+
+        <section class="strip">
+            <div class="wrap">
+                <ul>
+                    <li><span class="ico">🎙️</span>
+                        <h3>Interpretation</h3>
+                        <p>On-site, phone and video interpreting.</p>
+                    </li>
+                    <li><span class="ico">📄</span>
+                        <h3>Translation</h3>
+                        <p>Documents, websites and media.</p>
+                    </li>
+                    <li><span class="ico">⚖️</span>
+                        <h3>Legal &amp; Medical</h3>
+                        <p>Certified, specialist linguists.</p>
+                    </li>
+                    <li><span class="ico">🌍</span>
+                        <h3>Localization</h3>
+                        <p>Content adapted to each culture.</p>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="about">
+            <div class="wrap two">
+                <div class="visual" aria-hidden="true">
+                    <div class="big">A ⇄ 文</div><span class="t" style="top:12%;left:8%">Français</span><span class="t"
+                        style="bottom:14%;left:14%">Español</span><span class="t"
+                        style="top:20%;right:8%">العربية</span><span class="t"
+                        style="bottom:10%;right:10%">Kiswahili</span>
+                </div>
+                <div>
+                    <span class="eyebrow">About Us</span>
+                    <h2>Language is how trust gets built</h2>
+                    <p>Terrisec Language Solution connects people, organizations and institutions across language
+                        barriers. Our vetted linguists combine native fluency with subject expertise, so your message
+                        keeps its meaning, tone and intent.</p>
+                    <p>From a courtroom hearing to a product launch, we match each project with the right specialist and
+                        back every deliverable with a second-linguist quality review.</p>
+                    <blockquote>“We don’t just swap words. We make sure people truly understand each other.”<b>Founder,
+                            Terrisec Language Solution</b></blockquote>
+                    <a class="btn" href="#contact">Work With Us</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="services" class="alt">
+            <div class="wrap">
+                <div class="head"><span class="eyebrow">What We Do</span>
+                    <h2>Language services built around you</h2>
+                    <p>Choose a single service or a full multilingual program.</p>
+                </div>
+                <div class="grid">
+                    <div class="tile"><span class="ico">🧑‍🤝‍🧑</span>
+                        <h3>Consecutive Interpreting</h3>
+                        <p>Ideal for meetings, interviews, appointments and negotiations.</p>
+                    </div>
+                    <div class="tile"><span class="ico">🎧</span>
+                        <h3>Simultaneous Interpreting</h3>
+                        <p>Real-time interpreting for conferences, with equipment and booth support.</p>
+                    </div>
+                    <div class="tile"><span class="ico">📞</span>
+                        <h3>Phone &amp; Video Interpreting</h3>
+                        <p>On-demand remote access to interpreters, any hour, any day.</p>
+                    </div>
+                    <div class="tile"><span class="ico">📑</span>
+                        <h3>Document Translation</h3>
+                        <p>Contracts, certificates, reports and manuals, with certified options.</p>
+                    </div>
+                    <div class="tile"><span class="ico">💻</span>
+                        <h3>Website &amp; Software</h3>
+                        <p>Localized UI, apps and e-commerce content that reads natively.</p>
+                    </div>
+                    <div class="tile"><span class="ico">🎬</span>
+                        <h3>Subtitling &amp; Transcription</h3>
+                        <p>Accurate captions, transcripts and voice-over scripts.</p>
+                    </div>
+                </div>
+                <div class="langs" aria-label="Languages">
+                    <span>English</span><span>Spanish</span><span>French</span><span>Arabic</span><span>Mandarin</span><span>Portuguese</span><span>Russian</span><span>Swahili</span><span>Hindi</span><span>German</span><span>+
+                        70 more</span></div>
+            </div>
+        </section>
+
+        <section id="reviews">
+            <div class="wrap">
+                <div class="head"><span class="eyebrow">Our Reviews</span>
+                    <h2>Words from our clients</h2>
+                    <p>Sample testimonials. Replace with real client feedback.</p>
+                </div>
+                <div class="rev">
+                    <figure>
+                        <div class="stars" aria-label="5 stars">★★★★★</div>
+                        <p>Our interpreter arrived prepared, stayed neutral and kept every detail intact. Our
+                            international board meeting ran without a single misunderstanding.</p>
+                        <figcaption><span class="av">AM</span><span><b>Amina M.</b>Operations Director</span>
+                        </figcaption>
+                    </figure>
+                    <figure>
+                        <div class="stars" aria-label="5 stars">★★★★★</div>
+                        <p>Fast, precise certified translations for our immigration filings. The team answered every
+                            question and delivered a day early.</p>
+                        <figcaption><span class="av">DL</span><span><b>Daniel L.</b>Attorney</span></figcaption>
+                    </figure>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact" class="cta">
+            <div class="wrap two">
+                <div><span class="eyebrow">Contact Us</span>
+                    <h2>Let’s get your message across</h2>
+                    <p>Tell us your languages, timeline and format. We’ll reply with a clear quote, usually within one
+                        business day.</p>
+                </div>
+                <form id="f">
+                    <input name="n" placeholder="Your name" required aria-label="Name">
+                    <input name="e" type="email" placeholder="Email address" required aria-label="Email">
+                    <select name="s" aria-label="Service">
+                        <option>Interpretation</option>
+                        <option>Translation</option>
+                        <option>Localization</option>
+                        <option>Other</option>
+                    </select>
+                    <textarea name="m" rows="4" placeholder="Languages, dates and project details"
+                        aria-label="Details"></textarea>
+                    <button class="btn" type="submit">Send Request</button>
+                    <p id="ok" role="status"></p>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="wrap">
+            <div class="cols">
+                <div><a class="logo" href="#top"><svg class="lg" role="img" aria-label="TLS logo">
+                            <use href="#tls" />
+                        </svg>Terrisec</a>
+                    <p>Professional interpretation and translation that helps people understand each other.</p>
+                </div>
+                <div>
+                    <h4>Sitemap</h4>
+                    <ul>
+                        <li><a href="#top">Home</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#reviews">Reviews</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="#services">Interpretation</a></li>
+                        <li><a href="#services">Translation</a></li>
+                        <li><a href="#services">Localization</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Contact</h4>
+                    <ul>
+                        <li>Your address here</li>
+                        <li>(000) 000-0000</li>
+                        <li>hello@yourdomain.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copy">© 2026 Terrisec Language Solution. All rights reserved.</div>
+        </div>
+    </footer>
+
+    <script>
+        (function () {
+            var r = document.documentElement, b = document.getElementById('theme');
+            function dark() { return r.dataset.theme ? r.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches }
+            function sync() { b.textContent = dark() ? '☀' : '☾' }
+            b.onclick = function () { r.dataset.theme = dark() ? 'light' : 'dark'; sync() }; sync();
+            var m = document.getElementById('menu');
+            document.getElementById('burger').onclick = function () { m.classList.toggle('open') };
+            m.onclick = function () { m.classList.remove('open') };
+            document.getElementById('f').onsubmit = function (e) { e.preventDefault(); document.getElementById('ok').textContent = 'Thank you! Your request is noted (demo form, not connected to email yet).'; e.target.reset() };
+        })();
+    </script>
+</body>
+
+</html>
