@@ -808,17 +808,19 @@
                     <p>Tell us your languages, timeline and format. We’ll reply with a clear quote, usually within one
                         business day.</p>
                 </div>
-                <form id="f">
-                    <input name="n" placeholder="Your name" required aria-label="Name">
-                    <input name="e" type="email" placeholder="Email address" required aria-label="Email">
-                    <select name="s" aria-label="Service">
+                <form id="f" action="https://formspree.io/f/xkjjzlav" method="POST">
+                    <input name="name" placeholder="Your name" required aria-label="Name">
+                    <input name="email" type="email" placeholder="Email address" required aria-label="Email">
+                    <select name="service" aria-label="Service">
                         <option>Interpretation</option>
                         <option>Translation</option>
                         <option>Localization</option>
                         <option>Other</option>
                     </select>
-                    <textarea name="m" rows="4" placeholder="Languages, dates and project details"
+                    <textarea name="message" rows="4" placeholder="Languages, dates and project details"
                         aria-label="Details"></textarea>
+                    <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" style="display:none"
+                        aria-hidden="true">
                     <button class="btn" type="submit">Send Request</button>
                     <p id="ok" role="status"></p>
                 </form>
@@ -854,7 +856,7 @@
                 <div>
                     <h4>Contact</h4>
                     <ul>
-                        <li>120 Paper Mill Rd Lawrenceville, GA 30046</li>
+                        <li>120 Paper Mill Rd, Lawrenceville, GA 30046</li>
                         <li>(678) 693-3786</li>
                         <li>contact@terrisec.com</li>
                     </ul>
@@ -873,7 +875,13 @@
             var m = document.getElementById('menu');
             document.getElementById('burger').onclick = function () { m.classList.toggle('open') };
             m.onclick = function () { m.classList.remove('open') };
-            document.getElementById('f').onsubmit = function (e) { e.preventDefault(); document.getElementById('ok').textContent = 'Thank you! Your request is noted (demo form, not connected to email yet).'; e.target.reset() };
+            var fm = document.getElementById('f'), ok = document.getElementById('ok');
+            fm.onsubmit = function (e) {
+                e.preventDefault(); ok.textContent = 'Sending…';
+                fetch(fm.action, { method: 'POST', body: new FormData(fm), headers: { 'Accept': 'application/json' } })
+                    .then(function (r) { if (r.ok) { ok.textContent = 'Thank you! We’ll reply within one business day.'; fm.reset() } else { ok.textContent = 'Sorry, something went wrong. Please email us directly.' } })
+                    .catch(function () { ok.textContent = 'Sorry, something went wrong. Please email us directly.' })
+            };
         })();
     </script>
 </body>
